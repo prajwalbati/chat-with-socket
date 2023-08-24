@@ -20,6 +20,14 @@ Learn more about [Nx generators on the docs](https://nx.dev/plugin-features/use-
 
 `npx nx generate @nx/node:application server`
 
+## Generate angular frontend application
+
+`npx nx generate @nx/angular:app client`
+
+## Add angular material config
+
+`npx nx generate @angular/material:ng-add --project=client --typography false --theme indigo-pink --animations true`
+
 
 
 ## Running tasks
