@@ -1,6 +1,6 @@
 import express from 'express';
 import { ServerOptions } from 'ws';
-import { WsHandler } from './app/wsHandler';
+import { WsHandler } from './app/ws-handler';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
