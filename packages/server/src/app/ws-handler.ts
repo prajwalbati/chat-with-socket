@@ -23,7 +23,9 @@ export class WsHandler {
     onSocketConnected(socket: WebSocket, request: IncomingMessage) {
         console.log("New websocket connection");
 
-        this.userManager.add(socket);
+        this.userManager.add(socket, request);
+
+        this.userManager.sendToAll({'event': 'chat', 'contents': 'New user connected'});
 
         socket.on('message', (data: RawData) => {
             this.onSocketMessage(socket, data);
@@ -38,7 +40,7 @@ export class WsHandler {
         const payload: WsMessage = JSON.parse(`${data}`);
         console.log(payload);
 
-        this.userManager.send(socket, {event: 'chat', contents: 'hey, still here'});
+        this.userManager.sendToAll(payload);
     }
 
     onSocketClosed(socket, code, reason) {

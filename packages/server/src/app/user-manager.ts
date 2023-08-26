@@ -1,11 +1,27 @@
-import { WsMessage } from '@chat-with-socket/types';
+import { WsMessage, User, SystemNotice } from '@chat-with-socket/types';
+import { IncomingMessage } from 'http';
 import { WebSocket } from 'ws';
 
-export class UserManager {
-    private sockets = new Set<WebSocket>();
+let currId = 1;
 
-    add(socket: WebSocket) {
-        this.sockets.add(socket);
+export class UserManager {
+    private sockets = new Map<WebSocket, User>();
+
+    add(socket: WebSocket, request: IncomingMessage) {
+        const fullURL = new URL(request.headers.host + request.url);
+        const name = fullURL.searchParams.get('name');
+        const user: User = {
+            name,
+            id: currId++
+        }
+
+        const systemNotice: SystemNotice = {
+            event: 'systemNotice',
+            contents: `${name} has joined the chat`
+        }
+        this.sendToAll(systemNotice);
+
+        this.sockets.set(socket, user);
     }
 
     remove(socket: WebSocket) {
@@ -17,10 +33,10 @@ export class UserManager {
         socket.send(data);
     }
 
-    sendToAll(message) {
+    sendToAll(message: WsMessage) {
         const data = JSON.stringify(message);
 
-        this.sockets.forEach(socket => {
+        Array.from(this.sockets.keys()).forEach(socket => {
             if (socket.readyState === WebSocket.OPEN) {
                 socket.send(data);
             }
