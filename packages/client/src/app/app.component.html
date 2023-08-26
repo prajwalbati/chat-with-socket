@@ -1,1 +1,26 @@
-<div class="blue">{{title}}</div>
+<div class="login-state" [ngSwitch]="currentUser === undefined">
+    <ng-container *ngSwitchCase="true">
+        <mat-form-field appearance="fill">
+            <input #userName matInput placeholder="What is your name?">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="connect(userName)">Connect</button>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="false">
+        <h3>{{ currentUser | json }}</h3>
+    </ng-container>
+</div>
+
+<div class="chat-area">
+    <mat-card *ngFor="let message of messages">
+        <p>{{message.author.name}}</p>
+        <pre>{{message.contents}}</pre>
+    </mat-card>
+</div>
+
+<div class="chat-input">
+    <mat-form-field appearance="outline">
+        <input matInput placeholder="What's in your mind?">
+    </mat-form-field>
+</div>
+
