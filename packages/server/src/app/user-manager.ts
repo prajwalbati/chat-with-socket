@@ -1,4 +1,4 @@
-import { WsMessage, User, SystemNotice } from '@chat-with-socket/types';
+import { WsMessage, User, SystemNotice, LoginMessage } from '@chat-with-socket/types';
 import { IncomingMessage } from 'http';
 import { WebSocket } from 'ws';
 
@@ -20,6 +20,11 @@ export class UserManager {
             contents: `${name} has joined the chat`
         }
         this.sendToAll(systemNotice);
+
+        const loginMessage: LoginMessage = {
+            user, event: 'login'
+        };
+        socket.send(JSON.stringify(loginMessage));
 
         this.sockets.set(socket, user);
     }

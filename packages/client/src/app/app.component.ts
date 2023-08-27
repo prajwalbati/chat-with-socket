@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatRelayMessage, User } from '@chat-with-socket/types';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'chat-with-socket-root',
@@ -12,6 +13,10 @@ export class AppComponent implements OnInit {
   messages: ChatRelayMessage[] = [];
   currentUser: User;
 
+  constructor(private appService: AppService) {
+
+  }
+
   ngOnInit(): void {
       this.messages = [
         { event: 'chatRelay', author: {name: 'Jane', id: 1}, contents: 'Hi this is Jane'},
@@ -19,6 +24,7 @@ export class AppComponent implements OnInit {
       ];
 
       // this.currentUser = {};
+      this.appService.user$.subscribe(user => this.currentUser = user);
   }
 
   connect(userNameInput: HTMLInputElement) {
