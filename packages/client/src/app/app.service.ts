@@ -6,19 +6,20 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 @Injectable()
 export class AppService {
 
-    user$ = new BehaviorSubject<User>(undefined);
-    socket = WebSocketSubject<WsMessage>;
+    user$: BehaviorSubject<User>;
+    socket: WebSocketSubject<WsMessage>;
 
     connect(name: string) {
         this.socket = webSocket(`ws://localhost:8080?name=${name}`);
         this.socket.subscribe(message => this.onMessageFromServer(message));
     }
 
-    onMessageFromServer(message: WsMessage) {
+    onMessageFromServer(message: WsMessage | any) {
         console.log('From server:')
+        console.log(message);
         switch(message.event) {
             case 'login': {
-                this.user$.next(message.user);
+                this.user$ = message.user;
                 break;
             }
         }
