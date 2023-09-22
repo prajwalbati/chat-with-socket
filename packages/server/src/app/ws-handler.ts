@@ -28,6 +28,7 @@ export class WsHandler {
         this.userManager.sendToAll({'event': 'chat', 'contents': 'New user connected'});
 
         socket.on('message', (data: RawData) => {
+            console.log("message receieved")
             this.onSocketMessage(socket, data);
         });
 

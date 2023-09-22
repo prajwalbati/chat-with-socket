@@ -16,7 +16,7 @@ app.listen(port, host, () => {
 });
 
 function main() {
-  const options: ServerOptions = {port: 8080};
+  const options: ServerOptions = {port: Number(process.env.SOCKET_PORT)};
   const handler = new WsHandler();
   handler.initialize(options);
 };

@@ -23,8 +23,15 @@ export class AppComponent implements OnInit {
         { event: 'chatRelay', author: {name: 'Henry', id: 1}, contents: 'Hi this is Henry'}
       ];
 
-      // this.currentUser = {};
-      this.appService.user$.subscribe(user => this.currentUser = user);
+      this.appService.user$.subscribe(user => {
+        console.log("subscribe for user");
+        this.currentUser = user;
+      }, error => {
+        console.log(error);
+      });
+
+      this.appService.messages$.subscribe(message => console.log("test:"+message));
+
   }
 
   connect(userNameInput: HTMLInputElement) {

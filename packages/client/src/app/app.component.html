@@ -1,4 +1,4 @@
-<div class="login-state" [ngSwitch]="currentUser === undefined">
+<div class="login-state" [ngSwitch]="currentUser.id === 0">
     <ng-container *ngSwitchCase="true">
         <mat-form-field appearance="fill">
             <input #userName matInput placeholder="What is your name?">
@@ -10,7 +10,6 @@
         <h3>{{ currentUser | json }}</h3>
     </ng-container>
 </div>
-
 <div class="chat-area">
     <mat-card *ngFor="let message of messages">
         <p>{{message.author.name}}</p>
