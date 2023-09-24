@@ -13,15 +13,15 @@
 <div class="chat-area" [ngSwitch]="currentUser.id === 0">
     <ng-container *ngSwitchCase="false">
         <mat-card *ngFor="let message of messages">
-            <p>{{message.author.name}}</p>
-            <pre>{{message.contents}}</pre>
+            <p *ngIf="message.event=='chatRelay'">{{message?.author?.name}}</p>
+            <pre *ngIf="message.event!=='login'">{{message?.contents}}</pre>
         </mat-card>
-
 
         <div class="chat-input">
             <mat-form-field appearance="outline">
-                <input matInput placeholder="What's in your mind?">
+                <input matInput placeholder="What's in your mind?" #textMessage>
             </mat-form-field>
+            <button mat-raised-button color="primary" (click)="sendMessage(textMessage)">Send</button>
         </div>
 
     </ng-container>

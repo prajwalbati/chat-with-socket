@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { User, WsMessage } from "@chat-with-socket/types";
+import { ChatRelayMessage, User, WsMessage } from "@chat-with-socket/types";
 import { BehaviorSubject } from "rxjs";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
@@ -16,21 +16,32 @@ export class AppService {
     }
 
     onMessageFromServer(message: WsMessage | any) {
-        console.log('From server:')
-        console.log(`Event: ${message.event}, Msg: ${message.contents}`);
 
         switch(message.event) {
             case 'login':
-                // this.user$ = message.user;
-                console.log("call next on user login");
                 this.user$.next(message.user);
                 break;
             case 'chat':
-                console.log("call next on message chat");
-                this.messages$.next(message);
+                let messages1 = this.messages$.value;
+                messages1.push(message);
+                this.messages$.next(messages1);
+                break;
+            case 'chatRelay':
+                let messages = this.messages$.value;
+                messages.push(message);
+                this.messages$.next(messages);
                 break;
             default:
                 console.log("Default");
         }
+    }
+
+    sendMessage(message: string) {
+        let chatMessage: WsMessage = {
+            contents: message,
+            author: this.user$.value,
+            event: 'chatRelay'
+        };
+        this.socket.next(chatMessage);
     }
 };

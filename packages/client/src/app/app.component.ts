@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatRelayMessage, User } from '@chat-with-socket/types';
+import { User, WsMessage } from '@chat-with-socket/types';
 import { AppService } from './app.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AppService } from './app.service';
 export class AppComponent implements OnInit {
   title = 'I am angular';
 
-  messages: ChatRelayMessage[] = [];
+  messages: WsMessage[] = [];
   currentUser: User;
 
   constructor(private appService: AppService) {
@@ -24,13 +24,14 @@ export class AppComponent implements OnInit {
       ];
 
       this.appService.user$.subscribe(user => {
-        console.log("subscribe for user");
         this.currentUser = user;
       }, error => {
         console.log(error);
       });
 
-      this.appService.messages$.subscribe(message => console.log("test:"+message));
+      this.appService.messages$.subscribe(message => {
+        this.messages = message;
+      });
 
   }
 
@@ -38,5 +39,10 @@ export class AppComponent implements OnInit {
     const name = userNameInput.value;
     console.log(`connecting as ${name}`);
     this.appService.connect(name);
+  }
+
+  sendMessage(textMessageInput: HTMLInputElement) {
+    const message = textMessageInput.value;
+    this.appService.sendMessage(message);
   }
 }
