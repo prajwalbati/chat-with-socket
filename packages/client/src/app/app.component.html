@@ -10,16 +10,19 @@
         <h3>{{ currentUser | json }}</h3>
     </ng-container>
 </div>
-<div class="chat-area">
-    <mat-card *ngFor="let message of messages">
-        <p>{{message.author.name}}</p>
-        <pre>{{message.contents}}</pre>
-    </mat-card>
-</div>
+<div class="chat-area" [ngSwitch]="currentUser.id === 0">
+    <ng-container *ngSwitchCase="false">
+        <mat-card *ngFor="let message of messages">
+            <p>{{message.author.name}}</p>
+            <pre>{{message.contents}}</pre>
+        </mat-card>
 
-<div class="chat-input">
-    <mat-form-field appearance="outline">
-        <input matInput placeholder="What's in your mind?">
-    </mat-form-field>
-</div>
 
+        <div class="chat-input">
+            <mat-form-field appearance="outline">
+                <input matInput placeholder="What's in your mind?">
+            </mat-form-field>
+        </div>
+
+    </ng-container>
+</div>
