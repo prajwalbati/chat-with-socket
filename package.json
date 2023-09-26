@@ -7,7 +7,9 @@
     "server:lint": "nx lint server",
     "server:start": "nx serve server",
     "client:lint": "nx lint client",
-    "client:start": "nx serve client"
+    "client:start": "nx serve client",
+    "build": "nx build server",
+    "build:client": "nx build client"
   },
   "private": true,
   "devDependencies": {
